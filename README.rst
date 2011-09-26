@@ -3,6 +3,7 @@ Mafia virtual game table
 ========================
 
 It is a simple web page for comfortable playing role game `Mafia <http://en.wikipedia.org/wiki/Mafia_%28party_game%29>`_.
+You can take a look at it `on GitHub <http://marwinxxii.github.com/Mafia-game/>`_ and `my homepage <http://marwin22.unet.ws/other/mafia.html>`_
 
 It has:
  - Voting
