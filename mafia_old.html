@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>Mafia</title>
+  <style>
+      .card {
+          text-align:center;
+          font-weight:bold;
+          border:1px dashed #000;
+      }
+      .name {
+          font-size:200%;
+      }
+      .red {
+          color:#555;
+          font-size:150%;
+      }
+      ul {
+          list-style-type:none;
+      }
+      .role {
+          font-size:250%;
+      }
+      .mafia {
+          font-size:250%;
+          color:#f00;
+      }
+  </style>
+  <script>
+    var rCiv='Ч';
+    var rMaf='М';
+    var rSh='Ш';
+    var rCom='К';
+    var rDoc='Д';
+    var players=[];
+    var cards=[];
+    var nightMode=true;
+
+    function addPlayer() {
+        var player=document.getElementById('player');
+        if (player.value.length!=0) {
+            var newPlayer={
+                name:player.value,
+                alive:true,
+                role:rCiv}
+            players.push(newPlayer);
+            var td=document.createElement('td');
+            createCard(td,newPlayer);
+            cards.push(td);
+            if (players.length==1) {
+                var playerTable=document.createElement('table');
+                playerTable.id='playerTable';
+                playerTable.width='100%';
+                var tr=document.createElement('tr');
+                td.width='20%';
+                tr.appendChild(td)
+                playerTable.appendChild(tr);
+                var main=document.getElementById('main');
+                main.appendChild(playerTable)
+            } else {
+                var playerTable=document.getElementById('playerTable');
+                if (players.length<=5) td.width='20%';
+                if (players.length%6==0) {
+                    var tr=document.createElement('tr');
+                    tr.appendChild(td);
+                    playerTable.appendChild(tr)
+                } else {
+                    playerTable.lastChild.appendChild(td);
+                }
+            }
+        }
+    }
+    
+    function createCard(td,player) {
+        td.innerHTML='';
+        td.className='card';
+        var tab=document.createElement('table');
+        tab.width='100%';
+        tab.style.textalign='center';
+        var temp=document.createElement('tr');
+        tab.appendChild(temp);
+        temp=document.createElement('td');
+        temp.innerHTML=player.name;//innerText doesnt work in FF
+        temp.className='name';
+        tab.appendChild(temp);
+        if (player.role!=rCiv) {
+            temp=document.createElement('tr');
+            tab.appendChild(temp);
+            temp=document.createElement('td');
+            if (player.role==rMaf) {
+                temp.className='mafia';
+                temp.innerHTML=rMaf;
+            } else {
+                temp.className='role';
+                switch(player.role) {
+                    case rSh:
+                        temp.innerHTML=rSh;
+                        break;
+                    case rCom:
+                        temp.innerHTML=rCom;
+                        break;
+                    case rDoc:
+                        temp.innerHTML=rDoc;
+                        break;
+                }
+            }
+            tab.appendChild(temp);
+        }
+        //role links
+        var civil=document.createElement('a');
+        civil.href='#';
+        civil.innerHTML='Ч';
+        civil.className='red';
+        civil.onclick=function() {
+            player.role=rCiv;
+            createCard(td,player);
+        }
+        td.appendChild(civil);
+        var maf=document.createElement('a');
+        maf.href='#';
+        maf.innerHTML='M';
+        maf.className='red';
+        maf.onclick=function() {
+            player.role=rMaf;
+            createCard(td,player);
+        }
+        td.appendChild(maf);
+        var sheriff=document.createElement('a');
+        sheriff.href='#';
+        sheriff.innerHTML='Ш';
+        sheriff.className='red';
+        sheriff.onclick=function() {
+            player.role=rSh;
+            createCard(td,player);
+        }
+        td.appendChild(sheriff);
+        var comissar=document.createElement('a');
+        comissar.href='#';
+        comissar.innerHTML='К';
+        comissar.className='red';
+        comissar.onclick=function() {
+            player.role=rCom;
+            createCard(td,player);
+        }
+        td.appendChild(comissar);
+        var doctor=document.createElement('a');
+        doctor.href='#';
+        doctor.innerHTML='Д';
+        doctor.className='red';
+        doctor.onclick=function() {
+            player.role=rDoc;
+            createCard(td,player);
+        }
+        td.appendChild(doctor);
+        
+        temp=document.createElement('tr');
+        tab.appendChild(temp);
+        temp=document.createElement('td');
+        //other links
+        var kill=document.createElement('a');
+        kill.href='#';
+        if (!player.alive) {
+            td.style.background='#B03A3A';
+            kill.innerHTML='Оживить';
+        } else {
+            td.style.background='#fff';
+            kill.innerHTML='Убить';
+        }
+        kill.onclick=function() {
+            player.alive=!player.alive;
+            createCard(td,player);
+        }
+        temp.appendChild(kill);
+        tab.appendChild(temp);
+        td.appendChild(tab);
+        return td;
+    }
+  </script>
+</head>
+<body>
+<div id="main">
+</div>
+Игроки: <input type="text" id="player" />
+<input type="button" value="Добавить игрока" onclick="addPlayer()" />
+</body>
+</html>
