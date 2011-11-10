@@ -445,10 +445,12 @@ This is a small page used for more comfortable playing in a role game Mafia
             return function(event) {
                 event.stopPropagation();
                 if (draggableCard!=card) {
-                    var target1=card.nextSibling;
-                    var target2=draggableCard.nextSibling;
-                    table.root.insertBefore(draggableCard,target1);
-                    table.root.insertBefore(card,target2);
+                    if (draggableCard.nextSibling!=card) {
+                        table.root.insertBefore(draggableCard,card);
+                    } else {
+                        var target1=card.nextSibling;
+                        table.root.insertBefore(draggableCard,target1);
+                    }
                 }
                 return false;
             }
